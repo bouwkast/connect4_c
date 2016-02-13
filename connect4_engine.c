@@ -120,23 +120,38 @@ int check_up_right(int num_rows, int num_columns, int length_to_win, int array[n
 int check_up_left(int num_rows, int num_columns, int length_to_win, int array[num_rows][num_columns]) {
 	// rows will increase to go down, columns will decrease to go left
 	// need to iterate throughout entire board normally
+	int winner = -1;
+	int count = 0;
+	int iterate = length_to_win - 1;
+	bool game_is_over = false; // assume game isn't over yet, look for a win though
 	for(int row = 0; row < num_rows; ++row) {
 		for(int col = 0; col < num_columns; ++col) {
-			if(row + (length_to_win - 1) < num_rows) { // row bound checking
-				if(col - (length_to_win - 1) > -1) { // col bound checking
+			if(row + (length_to_win - 1) < num_rows) { // row boundary checking
+				if(col - (length_to_win - 1) > -1) { // col boundary checking
+					// at this point there could be an up-left diagonal win
 					int player = board[row][col];
-					if(player != -1) {
-						// go down and to the left to see if there is a win
-						for(int row_down = 1; row_down < num_rows - 1; ++row_down) {
-							for(int col_left = 1; col_left < num_columns; ++col_left) {
-								if(board[row + row_down][col - col_left] != player) {
-									flag = 0;
-								}
+					if(player != EMPTY) { // check to make sure cell isn't empty
+						count++; // one token, now look for others up/left or down/right
+						int start_row = row + 1;
+						int start_col = col - 1;
+						iterate = length_to_win - 1; // num times to check
+						bool cont = true; // should we continue to check or not
+						while(iterate >= 0 && countinue) {
+							if(player == array[start_row][start_col]) {
+								count++;
+								++start_row;
+								++start_col;
+								--iterate;	
+							} else {
+								cont = false;
 							}
+						}
+						if(cont) { // if we found a diagonal win return winner
+							return player;
 						}
 					}
 				}
 			}
 		}
-	}
+	}	
 }
