@@ -1,19 +1,27 @@
 #include <stdio.h>
 #include "connect4_engine.h"
 
-int player;
+#define EMPTY -1
 
 int place_token(int player, int column, int num_rows, int num_columns, int board[num_rows][num_columns]) {
-	for(int row = 0; row < num_rows; ++rows) {
-		if(row == num_rows - 1 && board[row][column] == -1) {
-			board[row][column] == player;
-			return 1;
-		}
-		else if(board[row][column] == -1 && row + 1 <= num_rows && board[row+1][column] != -1) {
-			board[row][column] == player;
-			return 1;
-		}
+	if(column >= num_columns || column < 0) {
+		printf("Couldn't place token on board because column is not within the boundaries\n");
+		return 0;
 	}
+	for(int row = num_rows - 1; row > -1; --rows) { // have to go up each row to find resting point of token
+		// Start looking from the bottom and go up until we find an EMPTY cell
+		if(board[row][column] == EMPTY) {
+			board[row][column] = player;
+			return 1; // successfully placed a token
+		}
+
+		if(row == 0) { // reached the top and haven't been able to place token anywhere
+			printf("That column is full, please select a different column.\n");
+			return 0; // wasn't able to place a token	
+		}
+		
+	}
+	// if it gets here, a token wasn't successfully placed
 	return 0;
 }
 
