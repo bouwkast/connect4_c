@@ -14,6 +14,118 @@ void ct_initialize(int num_rows, int num_cols, int array[num_rows][num_cols]) {
   }
 }
 
+void check_invalid_token_placement(CuTest *tc) {
+    int board[3][3];
+    ct_initialize(3, 3, board);
+
+    int was_placed = place_token(1, 100, 3, 3, board);
+    CuAssertIntEquals_Msg(tc, "Can't place token there.", 0, was_placed);
+}
+
+void board_is_full_check(CuTest *tc) {
+    int board[3][3];
+    ct_initialize(3, 3, board);
+
+    /*
+     *  0   1   0
+     *  0   0   1
+     *  1   0   -1
+     */
+
+    board[0][0] = 0;
+    board[0][1] = 1;
+    board[0][2] = 0;
+
+    board[1][0] = 0;
+    board[1][1] = 0;
+    board[1][2] = 1;
+
+    board[2][0] = 1;
+    board[2][1] = 0;
+
+
+    int winner = check_winner(3, 3, 3, board);
+    CuAssertIntEquals_Msg(tc, "No winner.", -1, winner);
+    int full = is_board_full(3, 3, board);
+    CuAssertIntEquals_Msg(tc, "Board should not be full.", -1, full);
+}
+
+void board_is_not_full_check(CuTest *tc) {
+    int board[3][3];
+    ct_initialize(3, 3, board);
+
+    /*
+     *  0   1   0
+     *  0   0   1
+     *  1   0   1
+     */
+
+    board[0][0] = 0;
+    board[0][1] = 1;
+    board[0][2] = 0;
+
+    board[1][0] = 0;
+    board[1][1] = 0;
+    board[1][2] = 1;
+
+    board[2][0] = 1;
+    board[2][1] = 0;
+    board[2][2] = 1;
+
+    int winner = check_winner(3, 3, 3, board);
+    CuAssertIntEquals_Msg(tc, "No winner.", -1, winner);
+    int full = is_board_full(3, 3, board);
+    CuAssertIntEquals_Msg(tc, "Board should be full.", 1, full);
+}
+
+void check_right_diagonal_return_winner(CuTest *tc) {
+    int board[3][3];
+    ct_initialize(3, 3, board);
+
+    board[0][0] = 1;
+    board[1][1] = 1;
+    board[2][2] = 1;
+
+    int winner = down_right_check(3, 3, 3, board);
+    CuAssertIntEquals_Msg(tc, "Player 1 should win.", 1, winner);
+}
+
+void check_right_diagonal_incomplete_no_winner(CuTest *tc) {
+    int board[3][3];
+    ct_initialize(3, 3, board);
+
+    board[0][0] = 1;
+    board[1][1] = 1;
+    board[2][2] = 0;
+
+    int winner = down_right_check(3, 3, 3, board);
+    CuAssertIntEquals_Msg(tc, "No winner.", -1, winner);
+}
+
+void check_left_diagonal_return_winner(CuTest *tc) {
+    int board[3][3];
+    ct_initialize(3, 3, board);
+
+    board[0][2] = 1;
+    board[1][1] = 1;
+    board[2][0] = 1;
+
+    int winner = down_left_check(3, 3, 3, board);
+    CuAssertIntEquals_Msg(tc, "Player 1 should win.", 1, winner);
+}
+
+void check_left_diagonal_incomplete_no_winner(CuTest *tc) {
+    int board[3][3];
+    ct_initialize(3, 3, board);
+
+    board[0][2] = 1;
+    board[1][1] = 1;
+    board[2][0] = 0;
+
+    int winner = down_left_check(3, 3, 3, board);
+    CuAssertIntEquals_Msg(tc, "No winner.", -1, winner);
+}
+
 /*******************************************************************************************
  *
  * Test winner function
@@ -302,6 +414,13 @@ CuSuite* c4_engine_suite() {
    SUITE_ADD_TEST(suite, vertical_column1);
    SUITE_ADD_TEST(suite, forward_diagonal);
    SUITE_ADD_TEST(suite, backward_diagonal);
+    SUITE_ADD_TEST(suite, check_right_diagonal_return_winner);
+    SUITE_ADD_TEST(suite, check_right_diagonal_incomplete_no_winner);
+    SUITE_ADD_TEST(suite, check_left_diagonal_return_winner);
+    SUITE_ADD_TEST(suite, check_left_diagonal_incomplete_no_winner);
+    SUITE_ADD_TEST(suite, board_is_full_check);
+    SUITE_ADD_TEST(suite, board_is_not_full_check);
+    SUITE_ADD_TEST(suite, check_invalid_token_placement);
    return suite;
 }
 
