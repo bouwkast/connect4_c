@@ -1,9 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "connect4_engine.h"
 
 #define EMPTY -1
 
 void init_board(int num_rows, int num_columns, int array[num_rows][num_columns]) {
+	if(num_rows < 3) { // ensure that the board is of appropriate size
+        printf("Error, minimum board size for rows/cols is 3. Exiting.\n");
+        exit(1);
+    }
 	for(int row = 0; row < num_rows; ++row) {
 		for(int col = 0; col < num_columns; ++col) {
 			array[row][col] = EMPTY;

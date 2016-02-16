@@ -9,10 +9,24 @@ int main(int argc, char* argv[]) {
 	
 	if(argc == 3) {
 		num_rows = atoi(argv[1]);
+		if(num_rows < 3) {
+			printf("Error, minimum board size for rows/cols is 3. Exiting.\n");
+			exit(1);
+		}
 		length_to_win = atoi(argv[2]);
+		if(length_to_win > num_rows) {
+            printf("Error, the length to win cannot be greater than the number of rows/cols. Exiting.\n");
+            exit(1);
+        }
 	} else if(argc == 2) {
 		num_rows = atoi(argv[2]);
-	}
+		if(num_rows < 3) {
+			printf("Error, minimum board size for rows/cols is 3. Exiting.\n");
+			exit(1);
+		}			
+	} else {
+        printf("Warning! No arguments found or too many arguments. Loading default settings.\n");
+    }
 
 	int board[num_rows][num_rows];
 	printf("Creating a connect 4 board of size %d x %d. To win a length of %d is required\n", num_rows, num_rows, length_to_win);
@@ -51,6 +65,7 @@ int main(int argc, char* argv[]) {
 		}
 		
 		if(was_placed) { // token was successfully placed, no winner, no tie
+            printf("Successfully placed a token in column %d\n", column);
 			players++; // goes to the next player
 		}
 
