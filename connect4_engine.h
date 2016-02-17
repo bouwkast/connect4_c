@@ -6,10 +6,8 @@
 
 #define RED "\x1b[31m"
 #define YELLOW "\x1b[33m"
-#define BLUE "\x1b[34m"
 #define RESET "\x1b[0m"
 #define GREEN "\x1b[32m"
-#define PINK "\x1b[35m"
 
 bool is_number(char input[]);
 int place_token(int player, int column, int num_rows, int num_columns, int board[num_rows][num_columns]);

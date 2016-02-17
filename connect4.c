@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
         if (length_to_win > num_rows)
             length_to_win = num_rows;
     } else {
-        printf("Warning! No arguments found or too many arguments. Loading default settings.\n");
+        printf("Warning! Too many arguments. Loading default settings.\n");
     }
 
     int board[num_rows][num_rows];
@@ -56,12 +56,12 @@ int main(int argc, char *argv[]) {
     while (1) {
 
         print_board(num_rows, num_rows, board, column);
-        printf("Board size is" RED " %d x %d " RESET "and ;a length of "RED "%d " RESET "is required to win\n.", num_rows, num_rows, length_to_win);
+        printf("Board size is" RED " %d x %d " RESET "and ;a length of "RED "%d " RESET "is required to win.\n", num_rows, num_rows, length_to_win);
         int is_winner = -1;
         int is_full = -1;
 
         int was_placed = 0; // if it is 1, that means a token was placed successfully
-        printf("It is player %d's turn.\n", players % 2);
+        printf("\nIt is player %d's turn.\n", players % 2);
         printf("Please enter a column number between %d and %d to place a token in.\n", 0, num_rows - 1);
 
 

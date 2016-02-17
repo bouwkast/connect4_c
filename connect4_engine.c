@@ -16,7 +16,7 @@ bool is_number(char input[]) {
 }
 
 void init_board(int num_rows, int num_columns, int array[num_rows][num_columns]) {
-	if(num_rows < 3) { // ensure that the board is of appropriate size
+	if(num_rows < 3 && num_rows < 101) { // ensure that the board is of appropriate size
         printf(YELLOW"Error, minimum board size for rows/cols is 3. Exiting.\n"RESET);
         exit(1);
     }
@@ -30,7 +30,7 @@ void init_board(int num_rows, int num_columns, int array[num_rows][num_columns])
 int place_token(int player, int column, int num_rows, int num_columns, int board[num_rows][num_columns]) {
 	
 	if(column >= num_columns || column < 0) {
-		printf(YELLOW"Couldn't place token on board because column is not within the boundaries\n"RESET);
+		printf(YELLOW"\n\nCouldn't place token on board because input was not within boundaries.\n"RESET);
 		return 0;
 	}
 	for(int row = num_rows - 1; row > -1; --row) { // have to go up each row to find resting point of token
@@ -42,7 +42,7 @@ int place_token(int player, int column, int num_rows, int num_columns, int board
 		}
 
 		if(row == 0) { // reached the top and haven't been able to place token anywhere
-			printf(YELLOW"That column is full, please select a different column.\n"RESET);
+			printf(YELLOW"\n\nThat column is full, please select a different column.\n"RESET);
 			return 0; // wasn't able to place a token	
 		}
 	}
