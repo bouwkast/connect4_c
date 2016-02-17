@@ -15,6 +15,9 @@ int main(int argc, char *argv[]) {
         if (num_rows < 3) {
             printf(YELLOW"Error, minimum board size for rows/cols is 3. Exiting.\n"RESET);
             exit(1);
+        } else if (num_rows > 100) {
+            printf(YELLOW"Error, the board size cannot be greater than 100. Exiting.\n"RESET);
+            exit(1);
         }
         if (is_number(argv[2]))
             length_to_win = atoi(argv[2]);
@@ -53,6 +56,7 @@ int main(int argc, char *argv[]) {
     while (1) {
 
         print_board(num_rows, num_rows, board, column);
+        printf("Board size is" RED " %d x %d " RESET "and ;a length of "RED "%d " RESET "is required to win\n.", num_rows, num_rows, length_to_win);
         int is_winner = -1;
         int is_full = -1;
 
@@ -67,9 +71,8 @@ int main(int argc, char *argv[]) {
             column = atoi(input);
         } else {
             printf(YELLOW "\n\nWarning, please enter integers only for the column you wish to place a token into.\n\n" RESET);
+            column = -1; // so it won't place a token in the previously selected column
         }
-//        fgets(line, sizeof(line), stdin);
-//        sscanf(line, "%d", &column);
 
         was_placed = place_token(players % 2, column, num_rows, num_rows, board); // check to see if a token was placed
         is_winner = winner(num_rows, num_rows, length_to_win, board); // check to see if there is a winner
@@ -90,7 +93,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (was_placed) { // token was successfully placed, no winner, no tie
-            printf("\n\nSuccessfully placed a token in column " GREEN "%d\n\n" RESET, column);
+            printf(GREEN"\n\nSuccessfully" RESET " placed a token in column " GREEN "%d\n\n" RESET, column);
             players++; // goes to the next player
         }
 

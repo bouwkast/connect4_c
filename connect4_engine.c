@@ -164,7 +164,7 @@ int down_left_check(int num_rows, int num_columns, int length_to_win, int array[
 }
 
 void crash_and_burn() {
-    printf("Error! Please put only integers as command line arguments. Exiting.\n");
+    printf(YELLOW"Error! Please put only integers as command line arguments. Exiting.\n"RESET);
     exit(1);
 }
 
