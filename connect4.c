@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-//    char line[256];
     int num_rows = 8;
     int length_to_win = 4;
     if (argc == 3) {
