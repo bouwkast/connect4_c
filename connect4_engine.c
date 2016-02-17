@@ -1,12 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "connect4_engine.h"
 
 #define EMPTY -1
 
+int prev_row = -1;
+
+bool is_number(char input[]) {
+    for(int index = 0; index < strlen(input); ++index ) {
+        if(!isdigit(input[index]))
+            return false;
+    }
+    return true;
+}
+
 void init_board(int num_rows, int num_columns, int array[num_rows][num_columns]) {
 	if(num_rows < 3) { // ensure that the board is of appropriate size
-        printf("Error, minimum board size for rows/cols is 3. Exiting.\n");
+        printf(YELLOW"Error, minimum board size for rows/cols is 3. Exiting.\n"RESET);
         exit(1);
     }
 	for(int row = 0; row < num_rows; ++row) {
@@ -19,18 +30,19 @@ void init_board(int num_rows, int num_columns, int array[num_rows][num_columns])
 int place_token(int player, int column, int num_rows, int num_columns, int board[num_rows][num_columns]) {
 	
 	if(column >= num_columns || column < 0) {
-		printf("Couldn't place token on board because column is not within the boundaries\n");
+		printf(YELLOW"Couldn't place token on board because column is not within the boundaries\n"RESET);
 		return 0;
 	}
 	for(int row = num_rows - 1; row > -1; --row) { // have to go up each row to find resting point of token
 		// Start looking from the bottom and go up until we find an EMPTY cell
 		if(board[row][column] == EMPTY) {
 			board[row][column] = player;
+            prev_row = row;
 			return 1; // successfully placed a token
 		}
 
 		if(row == 0) { // reached the top and haven't been able to place token anywhere
-			printf("That column is full, please select a different column.\n");
+			printf(YELLOW"That column is full, please select a different column.\n"RESET);
 			return 0; // wasn't able to place a token	
 		}
 	}
@@ -151,7 +163,10 @@ int down_left_check(int num_rows, int num_columns, int length_to_win, int array[
 	return -1;
 }
 
-
+void crash_and_burn() {
+    printf("Error! Please put only integers as command line arguments. Exiting.\n");
+    exit(1);
+}
 
 int is_board_full(int num_rows, int num_columns, int array[num_rows][num_columns]) {
 	for (int row = 0; row < num_rows; ++row) {
@@ -163,12 +178,17 @@ int is_board_full(int num_rows, int num_columns, int array[num_rows][num_columns
 	return 1; // board is full
 }
 
-void print_board(int num_rows, int num_columns, int array[num_rows][num_columns]) {
+void print_board(int num_rows, int num_columns, int array[num_rows][num_columns], int prev_col) {
 	for(int row = 0; row < num_rows; ++row) {
 		for(int col = 0; col < num_columns; ++col) {
-			printf("%d\t", array[row][col]);
+            if(row == prev_row && col == prev_col) {
+                printf(YELLOW"%d\t"RESET, array[row][col]);
+            } else {
+                printf("%d\t", array[row][col]);
+            }
+
 		}
-		printf("\n");
+		printf("\n\n\n");
 	}
 }
 
